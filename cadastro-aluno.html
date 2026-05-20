@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Aluno - Aula 2</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #f4f4f4;
+      text-align: center;
+    }
+    h1 { color: #333; }
+    input {
+      padding: 12px;
+      margin: 10px;
+      width: 280px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 12px 20px;
+      margin: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #cadastrarBtn {
+      background-color: #28a745;
+      color: white;
+    }
+    #limparBtn {
+      background-color: #dc3545;
+      color: white;
+    }
+    #resultado {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 20px;
+      min-height: 80px;
+    }
+  </style>
+</head>
+<body>
+  <h1>📋 Cadastro de Aluno</h1>
+
+  <label><strong>Nome do Aluno:</strong></label><br>
+  <input type="text" id="nome" placeholder="Digite o nome completo"><br>
+
+  <label><strong>Idade:</strong></label><br>
+  <input type="number" id="idade" placeholder="Ex: 17" min="0"><br>
+
+  <label><strong>Nota Final:</strong></label><br>
+  <input type="number" id="nota" placeholder="Ex: 8.5" min="0" max="10" step="0.1"><br><br>
+
+  <button id="cadastrarBtn" onclick="cadastrarAluno()">Cadastrar Aluno</button>
+  <button id="limparBtn" onclick="limparCampos()">Limpar Campos</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    function cadastrarAluno() {
+      let nome = document.getElementById("nome").value.trim();
+      let idade = parseInt(document.getElementById("idade").value);
+      let nota = parseFloat(document.getElementById("nota").value);
+      let resultado = document.getElementById("resultado");
+
+      // Validação
+      if (nome === "") {
+        resultado.innerHTML = `<p style="color: red;">❌ Por favor, digite o nome do aluno.</p>`;
+        return;
+      }
+      if (isNaN(idade) || idade <= 0) {
+        resultado.innerHTML = `<p style="color: red;">❌ Idade inválida.</p>`;
+        return;
+      }
+      if (isNaN(nota) || nota < 0 || nota > 10) {
+        resultado.innerHTML = `<p style="color: red;">❌ Nota deve estar entre 0 e 10.</p>`;
+        return;
+      }
+
+      let situacao = "";
+      let cor = "";
+
+      if (nota >= 7) {
+        situacao = "✅ APROVADO";
+        cor = "#28a745";        // Verde
+      } 
+      else if (nota >= 5 && nota <= 6.9) {
+        situacao = "⚠️ RECUPERAÇÃO";
+        cor = "#ffc107";        // Amarelo
+      } 
+      else {
+        situacao = "❌ REPROVADO";
+        cor = "#dc3545";        // Vermelho
+      }
+
+      // Mostrar resultado com cor
+      resultado.style.backgroundColor = "#ffffff";
+      resultado.style.border = `3px solid ${cor}`;
+      resultado.innerHTML = `
+        <strong>Aluno:</strong> ${nome}<br>
+        <strong>Idade:</strong> ${idade} anos<br>
+        <strong>Nota:</strong> ${nota.toFixed(1)}<br><br>
+        <span style="font-size: 24px; color: ${cor};">
+          ${situacao}
+        </span>
+      `;
+    }
+
+    function limparCampos() {
+      document.getElementById("nome").value = "";
+      document.getElementById("idade").value = "";
+      document.getElementById("nota").value = "";
+      document.getElementById("resultado").innerHTML = "";
+      document.getElementById("resultado").style.border = "none";
+    }
+  </script>
+</body>
+</html>
